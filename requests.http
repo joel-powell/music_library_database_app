@@ -1,0 +1,19 @@
+GET http://localhost:9292/albums
+
+###
+
+POST http://localhost:9292/albums
+Content-Type: application/x-www-form-urlencoded
+
+title=Voyage&release_year=2022&artist_id=2
+
+###
+
+GET http://localhost:9292/artists
+
+###
+
+POST http://localhost:9292/artists
+Content-Type: application/x-www-form-urlencoded
+
+name=Wild nothing&genre=Indie

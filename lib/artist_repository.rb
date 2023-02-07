@@ -7,12 +7,11 @@ class ArtistRepository
     # Send the SQL query and get the result set.
     sql = 'SELECT id, name, genre FROM artists;'
     result_set = DatabaseConnection.exec_params(sql, [])
-    
+
     # The result set is an array of hashes.
     # Loop through it to create a model
     # object for each record hash.
     result_set.each do |record|
-
       # Create a new model object
       # with the record data.
       artist = Artist.new
@@ -23,7 +22,7 @@ class ArtistRepository
       artists << artist
     end
 
-    return artists
+    artists
   end
 
   def find(id)
@@ -35,13 +34,13 @@ class ArtistRepository
     artist.name = result_set[0]['name']
     artist.genre = result_set[0]['genre']
 
-    return artist
+    artist
   end
 
   def create(artist)
     sql = 'INSERT INTO artists (name, genre) VALUES ($1, $2);'
     result_set = DatabaseConnection.exec_params(sql, [artist.name, artist.genre])
 
-    return artist
+    artist
   end
 end
