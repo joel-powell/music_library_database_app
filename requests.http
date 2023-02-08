@@ -17,3 +17,10 @@ POST http://localhost:9292/artists
 Content-Type: application/x-www-form-urlencoded
 
 name=Wild nothing&genre=Indie
+
+###
+
+POST http://localhost:9292/albums
+Content-Type: application/x-www-form-urlencoded
+
+invalid_title=Voyage&invalid_release_year=2022&invalid_artist_id=2

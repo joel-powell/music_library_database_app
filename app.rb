@@ -20,6 +20,17 @@ class Application < Sinatra::Base
     erb(:albums)
   end
 
+  get '/albums/new' do
+    repo = ArtistRepository.new
+    @artists = repo.all
+
+    erb(:new_album)
+  end
+
+  get '/artists/new' do
+    erb(:new_artist)
+  end
+
   get '/albums/:id' do
     album_repo = AlbumRepository.new
     artist_repo = ArtistRepository.new
@@ -30,12 +41,30 @@ class Application < Sinatra::Base
   end
 
   post '/albums' do
+    # check that POST request contains necessary parameters
+    return status 400 unless all_album_params?
+
     repo = AlbumRepository.new
-    album = Album.new
-    album.title = params[:title]
-    album.release_year = params[:release_year]
-    album.artist_id = params[:artist_id]
-    repo.create(album)
+    @album = Album.new
+    @album.title = params[:title]
+    @album.release_year = params[:release_year]
+    @album.artist_id = params[:artist_id]
+    repo.create(@album)
+
+    erb(:album_created)
+  end
+
+  post '/artists' do
+    # check that POST request contains necessary parameters
+    return status 400 unless all_artist_params?
+
+    repo = ArtistRepository.new
+    @artist = Artist.new
+    @artist.name = params[:name]
+    @artist.genre = params[:genre]
+    repo.create(@artist)
+
+    erb(:artist_created)
   end
 
   get '/artists' do
@@ -52,11 +81,13 @@ class Application < Sinatra::Base
     erb(:artist)
   end
 
-  post '/artists' do
-    repo = ArtistRepository.new
-    artist = Artist.new
-    artist.name = params[:name]
-    artist.genre = params[:genre]
-    repo.create(artist)
+  private
+
+  def all_album_params?
+    %i[title release_year artist_id].all? { params.key?(_1) }
+  end
+
+  def all_artist_params?
+    %i[name genre].all? { params.key?(_1) }
   end
 end
