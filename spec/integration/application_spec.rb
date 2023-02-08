@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rack/test'
 require_relative '../../app'
 
@@ -30,10 +32,22 @@ describe Application do
     it 'should return the list of albums' do
       response = get('/albums')
 
-      expected_response = 'Doolittle, Surfer Rosa, Waterloo, Super Trouper, Bossanova, Lover, Folklore, I Put a Spell on You, Baltimore, Here Comes the Sun, Fodder on My Wings, Ring Ring'
+      expected_response = ['Doolittle', 'Surfer Rosa', 'Waterloo', 'Super Trouper', 'Bossanova', 'Lover', 'Folklore',
+                           'I Put a Spell on You', 'Baltimore', 'Here Comes the Sun', 'Fodder on My Wings', 'Ring Ring']
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq(expected_response)
+      expect(response.body).to include(*expected_response)
+    end
+  end
+
+  context 'GET /albums/:id' do
+    it 'should return the HTML content for a single album' do
+      response = get('/albums/1')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>Doolittle</h1>')
+      expect(response.body).to include('Release year: 1989')
+      expect(response.body).to include('Artist: Pixies')
     end
   end
 

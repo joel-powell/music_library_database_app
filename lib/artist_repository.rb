@@ -40,7 +40,6 @@ class ArtistRepository
   def create(artist)
     sql = 'INSERT INTO artists (name, genre) VALUES ($1, $2);'
     result_set = DatabaseConnection.exec_params(sql, [artist.name, artist.genre])
-
     artist
   end
 end
